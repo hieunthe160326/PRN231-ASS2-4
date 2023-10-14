@@ -11,27 +11,22 @@ namespace eStoreAPI
         public static void Main(string[] args)
         {
             //Get EDM 
-            ODataConventionModelBuilder edmBuilder = new ODataConventionModelBuilder();
-            edmBuilder.EntitySet<Category>("Category");
-            edmBuilder.EntitySet<Member>("Member");
-            edmBuilder.EntitySet<Order>("Order");
-            edmBuilder.EntitySet<OrderDetail>("OrderDetail");
-            edmBuilder.EntitySet<Product>("Product");
-
-            IEdmModel edmModel = edmBuilder.GetEdmModel();
+            ODataConventionModelBuilder edmBuilder = new();
+            edmBuilder.EntitySet<OrderDetail>("OrderDetails");
+            edmBuilder.EntitySet<Order>("Orders");            
+            edmBuilder.EntitySet<Product>("Products");
 
             var builder = WebApplication.CreateBuilder(args);
 
             //Add Service InMemoryData
             builder.Services.AddDbContext<EStoreContext>();
 
-            // Add services to the container.
             builder.Services.AddControllers();
 
             //Add Service Odata
             builder.Services.AddControllers().AddOData(opt
                 => opt.Select().Filter().Count().OrderBy().Expand().SetMaxTop(10)
-                .AddRouteComponents("odata", edmModel));
+                .AddRouteComponents("odata", edmBuilder.GetEdmModel()));
 
             //Setup for json parsing
             builder.Services.AddControllers().AddJsonOptions(options =>
@@ -53,11 +48,13 @@ namespace eStoreAPI
                 app.UseSwaggerUI();
             }
 
-            app.UseAuthorization();
-
             app.UseODataBatching();
 
-            app.MapControllers();
+            app.UseRouting();
+
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints => endpoints.MapControllers());
 
             app.Run();
         }

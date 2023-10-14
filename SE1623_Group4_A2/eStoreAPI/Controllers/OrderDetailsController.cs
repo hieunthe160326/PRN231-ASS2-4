@@ -12,12 +12,11 @@ using Microsoft.AspNetCore.OData.Routing.Controllers;
 
 namespace eStoreAPI.Controllers
 {
-    [Route("odata/OrderDetails")]
-    public class OrderDetailsODataController : ODataController
+    public class OrderDetailsController : ODataController
     {
         private readonly EStoreContext _context;
 
-        public OrderDetailsODataController(EStoreContext context)
+        public OrderDetailsController(EStoreContext context)
         {
             _context = context;
         }
@@ -29,9 +28,9 @@ namespace eStoreAPI.Controllers
         }
 
         [EnableQuery]
-        public IActionResult Get([FromODataUri] int key)
+        public async Task<IActionResult> Get([FromODataUri] int key)
         {
-            var orderDetail = _context.OrderDetails.FirstOrDefault(o => o.OrderDetailId == key);
+            var orderDetail = await _context.OrderDetails.FindAsync(key);
             if (orderDetail == null)
             {
                 return NotFound();
@@ -41,21 +40,21 @@ namespace eStoreAPI.Controllers
 
         [HttpPost]
         [EnableQuery]
-        public IActionResult Post([FromBody] OrderDetail orderDetail)
+        public async Task<IActionResult> Post([FromBody] OrderDetail orderDetail)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            _context.OrderDetails.Add(orderDetail);
-            _context.SaveChanges();
+            await _context.OrderDetails.AddAsync(orderDetail);
+            await _context.SaveChangesAsync();
             return Created(orderDetail);
         }
 
         [HttpPut]
         [EnableQuery]
-        public IActionResult Put([FromODataUri] int key, [FromBody] OrderDetail orderDetail)
+        public async Task<IActionResult> Put([FromODataUri] int key, [FromBody] OrderDetail orderDetail)
         {
             if (!ModelState.IsValid)
             {
@@ -68,22 +67,22 @@ namespace eStoreAPI.Controllers
             }
 
             _context.Entry(orderDetail).State = EntityState.Modified;
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return Updated(orderDetail);
         }
 
         [HttpDelete]
         [EnableQuery]
-        public IActionResult Delete([FromODataUri] int key)
+        public async Task<IActionResult> Delete([FromODataUri] int key)
         {
-            var orderDetail = _context.OrderDetails.Find(key);
+            var orderDetail = await _context.OrderDetails.FindAsync(key);
             if (orderDetail == null)
             {
                 return NotFound();
             }
 
             _context.OrderDetails.Remove(orderDetail);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return NoContent();
         }
     }
