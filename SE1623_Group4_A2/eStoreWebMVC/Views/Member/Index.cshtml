@@ -1,4 +1,5 @@
-﻿@model IEnumerable<MemberViewModel>;
+﻿@using eStoreAPI.Models;
+@model IEnumerable<Member>;
 
 @{
     ViewData["Title"] = "List Page";
@@ -13,29 +14,28 @@
     <thead class="table-dark">
         <tr>
             <th>ID</th>
-            <th>Username</th>
-            <th>Full Name</th>
-            <th>Gender</th>
-            <th>Birthday</th>
-            <th>Address</th>
-            <th>Actions</th>
+            <th>Email</th>
+            <th>Company Name</th>
+            <th>City</th>
+            <th>Country</th>
+            <th>Password</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
             <tr>
-                <td>@item.Id</td>
-                <td>@item.Username</td>
-                <td>@item.Fullname</td>
-                <td>@item.Gender</td>
-                <td>@item.Birthday</td>
-                <td>@item.Address</td>
+                <td>@item.MemberId</td>
+                <td>@item.Email</td>
+                <td>@item.CompanyName</td>
+                <td>@item.City</td>
+                <td>@item.Country</td>
+                <td>@item.Password</td>
                 <td>
-                    <a href="/customer/edit/@item.Id" class="btn btn-success">
+                    <a href="/customer/edit/@item.MemberId" class="btn btn-success">
                         <i class="fa fa-pen"></i>
                     </a>
-                    <a href="/customer/delete/@item.Id" class="btn btn-danger">
+                    <a href="/customer/delete/@item.MemberId" class="btn btn-danger">
                         <i class="fa fa-trash"></i>
                     </a>
                 </td>
