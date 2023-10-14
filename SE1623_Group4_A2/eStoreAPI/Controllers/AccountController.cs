@@ -22,8 +22,6 @@ namespace eStoreAPI.Controllers
             this.context = context;
         }
 
-
-
         [EnableQuery]
         [HttpGet]
         public IQueryable<Member> GetAccount()

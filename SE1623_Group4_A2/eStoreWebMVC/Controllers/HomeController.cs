@@ -1,21 +1,29 @@
-﻿using eStoreWebMVC.Models;
+﻿using Client_eStore.Helper;
+using eStoreAPI.Models;
+using eStoreWebMVC.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Net.Http.Headers;
 
 namespace eStoreWebMVC.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly HttpClient client;
+        private string api;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController()
         {
-            _logger = logger;
+            client = new HttpClient();
+            var contentType = new MediaTypeWithQualityHeaderValue("application/json");
+            client.DefaultRequestHeaders.Accept.Add(contentType);
+            api = "https://localhost:5273/Product/";
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var list = await client.GetApi<IEnumerable<Product>>(api + "all");
+            return View(list);
         }
 
         public IActionResult Privacy()
