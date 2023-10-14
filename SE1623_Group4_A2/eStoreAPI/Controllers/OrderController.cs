@@ -34,7 +34,7 @@ namespace eStoreAPI.Controllers
         }
 
         [HttpDelete("{key}")]
-        public IActionResult Delete([FromODataUri] int key)
+        public IActionResult Delete( int key)
         {
             Order order = _context.Orders.FirstOrDefault(m => m.OrderId == key);
             if (order == null)
