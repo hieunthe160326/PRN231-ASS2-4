@@ -52,7 +52,7 @@ namespace eStoreAPI.Controllers
 
         [HttpPut]
         [EnableQuery]
-        public async Task<IActionResult> Put([FromODataUri] int key, [FromBody] Order order)
+        public async Task<IActionResult> Put([FromODataUri] int key, [FromForm] Order order)
         {
             if (!ModelState.IsValid)
             {

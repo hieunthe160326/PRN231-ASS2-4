@@ -16,6 +16,7 @@ namespace eStoreAPI
             edmBuilder.EntitySet<Order>("Orders");            
             edmBuilder.EntitySet<Product>("Products");
             edmBuilder.EntitySet<Member>("Members");
+            edmBuilder.EntitySet<Category>("Categories");
 
             var builder = WebApplication.CreateBuilder(args);
 

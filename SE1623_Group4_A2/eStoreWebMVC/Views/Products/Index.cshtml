@@ -1,0 +1,84 @@
+﻿@model List<eStoreWebMVC.Models.Product>
+
+
+<h1>Product</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+
+<form method="post" action="/Products" class="mt-3">
+    <div class="mb-3">
+        <label for="searchType" class="form-label">Search by:</label>
+        <select id="searchType" name="searchType" class="form-select">
+            <option value="name">Product Name</option>
+            <option value="unitPrice">Unit Price</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="searchString" class="form-label">Search:</label>
+        <input type="text" id="searchString" name="searchString" class="form-control">
+    </div>
+    <button type="submit" class="btn btn-primary">Search</button>
+</form>
+
+
+@if (Model != null && Model.Count > 0)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Product Name
+                </th>
+                <th>
+                    Weight
+                </th>
+                <th>
+                    Unit Price
+                </th>
+                <th>
+                    Units In Stock
+                </th>
+                <th>
+                    Category
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProductName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Weight)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UnitPrice)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UnitInStock)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CategoryId)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.ProductId">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.ProductId">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.ProductId">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <h5 class="text-danger text-capitalize">Not Products Was Found</h5>
+}
+
+

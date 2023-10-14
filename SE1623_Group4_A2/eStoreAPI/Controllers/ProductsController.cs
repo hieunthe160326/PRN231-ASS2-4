@@ -35,7 +35,7 @@ namespace eStoreAPI.Controllers
 
         [HttpPost]
         [EnableQuery]
-        public async Task<IActionResult> Post([FromBody] Product product)
+        public async Task<IActionResult> Post([FromForm] Product product)
         {
             if (!ModelState.IsValid)
             {
@@ -49,7 +49,7 @@ namespace eStoreAPI.Controllers
 
         [HttpPut]
         [EnableQuery]
-        public async Task<IActionResult> Put([FromODataUri] int key, [FromBody] Product product)
+        public async Task<IActionResult> Put([FromODataUri] int key, [FromForm] Product product)
         {
             if (!ModelState.IsValid)
             {
