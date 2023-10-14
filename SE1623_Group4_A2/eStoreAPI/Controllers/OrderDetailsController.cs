@@ -40,10 +40,16 @@ namespace eStoreAPI.Controllers
 
         [HttpPost]
         [EnableQuery]
-        public async Task<IActionResult> Post([FromBody] OrderDetail orderDetail)
+        public async Task<IActionResult> Post([FromForm] OrderDetail orderDetail)
         {
+            ModelState.Remove(nameof(orderDetail.Order));
+            ModelState.Remove(nameof(orderDetail.Product));
+
             if (!ModelState.IsValid)
             {
+                var errors = ModelState.Select(x => x.Value.Errors)
+                           .Where(y => y.Count > 0)
+                           .ToList();
                 return BadRequest(ModelState);
             }
 

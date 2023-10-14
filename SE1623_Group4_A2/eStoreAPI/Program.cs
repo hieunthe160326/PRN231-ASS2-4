@@ -15,6 +15,7 @@ namespace eStoreAPI
             edmBuilder.EntitySet<OrderDetail>("OrderDetails");
             edmBuilder.EntitySet<Order>("Orders");            
             edmBuilder.EntitySet<Product>("Products");
+            edmBuilder.EntitySet<Member>("Members");
 
             var builder = WebApplication.CreateBuilder(args);
 
@@ -31,8 +32,8 @@ namespace eStoreAPI
             //Setup for json parsing
             builder.Services.AddControllers().AddJsonOptions(options =>
             {
+                options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
                 options.JsonSerializerOptions.PropertyNamingPolicy = null;
-                options.JsonSerializerOptions.DictionaryKeyPolicy = null;
             });
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
