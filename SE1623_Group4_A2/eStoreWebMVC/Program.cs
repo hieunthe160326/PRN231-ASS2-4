@@ -6,6 +6,11 @@ namespace eStoreWebMVC
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            builder.Services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromHours(8);
+            });
+            builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
