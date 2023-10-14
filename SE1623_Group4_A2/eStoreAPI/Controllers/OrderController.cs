@@ -28,16 +28,15 @@ namespace eStoreAPI.Controllers
 
         [EnableQuery]
         [HttpGet("{key}")]
-        public SingleResult<Order> Get([FromODataUri] int key)
+        public IActionResult Get(int key)
         {
-            IQueryable<Order> result = _context.Orders.Where(m => m.OrderId == key);
-            return SingleResult.Create(result);
+            return Ok(_context.Orders.Where(m => m.OrderId == key));
         }
 
         [HttpDelete("{key}")]
         public IActionResult Delete([FromODataUri] int key)
         {
-            var order = _context.Orders.FirstOrDefault(m => m.MemberId == key);
+            Order order = _context.Orders.FirstOrDefault(m => m.OrderId == key);
             if (order == null)
             {
                 return NotFound();
@@ -46,7 +45,7 @@ namespace eStoreAPI.Controllers
             _context.Orders.Remove(order);
             _context.SaveChanges();
 
-            return StatusCode((int)HttpStatusCode.NoContent);
+            return Ok();
         }
     }
 }

@@ -1,3 +1,6 @@
+using eStoreAPI.Models;
+using Microsoft.EntityFrameworkCore;
+
 namespace eStoreWebMVC
 {
     public class Program
@@ -9,6 +12,10 @@ namespace eStoreWebMVC
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
+            builder.Services.AddDbContext<EStoreContext>(options =>
+            {
+                options.UseSqlServer(builder.Configuration.GetConnectionString("MyCnn"));
+            });
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

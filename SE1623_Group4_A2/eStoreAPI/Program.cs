@@ -1,3 +1,7 @@
+using eStoreAPI.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+
 namespace eStoreAPI
 {
     public class Program
@@ -12,6 +16,10 @@ namespace eStoreAPI
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddDbContext<EStoreContext>(options =>
+            {
+                options.UseSqlServer(builder.Configuration.GetConnectionString("MyCnn"));
+            });
 
             var app = builder.Build();
 

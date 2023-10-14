@@ -27,6 +27,11 @@
                 <td>@order.RequiredDate</td>
                 <td>@order.ShippedDate</td>
                 <td>@order.Freight</td>
+                <td>
+                    <a href="/customer/delete/@order.OrderId" class="btn btn-danger">
+                        <i class="fa fa-trash"></i>
+                    </a>
+                </td>
             </tr>
         }
     </tbody>
