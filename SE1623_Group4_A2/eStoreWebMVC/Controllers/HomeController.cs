@@ -17,13 +17,14 @@ namespace eStoreWebMVC.Controllers
             client = new HttpClient();
             var contentType = new MediaTypeWithQualityHeaderValue("application/json");
             client.DefaultRequestHeaders.Accept.Add(contentType);
-            api = "https://localhost:5273/Product/";
+            api = "http://localhost:5273/";
         }
 
         public async Task<IActionResult> Index()
         {
-            var list = await client.GetApi<IEnumerable<Product>>(api + "all");
-            return View(list);
+            //var list = await client.GetApi<IEnumerable<Product>>(api + "all");
+            //return View(list);
+            return View();
         }
 
         public IActionResult Privacy()

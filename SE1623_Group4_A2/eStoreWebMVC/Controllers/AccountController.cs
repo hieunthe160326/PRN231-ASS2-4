@@ -10,7 +10,7 @@ using System.Text;
 
 namespace eStoreWebMVC.Controllers
 {
-    [Route("Account")]
+    [Route("account")]
     public class AccountController : Controller
     {
         private readonly HttpClient client;
@@ -21,13 +21,13 @@ namespace eStoreWebMVC.Controllers
             client = new HttpClient();
             var contentType = new MediaTypeWithQualityHeaderValue("application/json");
             client.DefaultRequestHeaders.Accept.Add(contentType);
-            baseUrl = "http://localhost:5273/Account";
+            baseUrl = "http://localhost:5273/api/account/";
         }
 
         [HttpGet("login", Name = "login")]
         public IActionResult Login() => View();
 
-        [HttpPost("lgoin")]
+        [HttpPost("login")]
         public async Task<IActionResult> Login(LoginInfo info)
         {
             if (ModelState.IsValid)
@@ -74,7 +74,7 @@ namespace eStoreWebMVC.Controllers
                 HttpResponseMessage res = await client.PostOrPutApi(mbInfo, baseUrl + "register", method: "POST");
                 if (res.IsSuccessStatusCode)
                 {
-                    return Redirect("/auth/login");
+                    return Redirect("/account/login");
                 }
                 else
                 {

@@ -11,7 +11,7 @@ using System.Text;
 
 namespace eStoreAPI.Controllers
 {
-    [Route("Account")]
+    [Route("api/account")]
     [ApiController]
     public class AccountController : ODataController
     {
@@ -38,13 +38,11 @@ namespace eStoreAPI.Controllers
                 if (await context.Members.AnyAsync(m => m.Email == member.Email))
                 {
                     return BadRequest("Email đã tồn tại.");
-                }
-
-                // Bạn nên sử dụng một thư viện hash mật khẩu, không lưu mật khẩu nguyên bản
+                }else
                 context.Members.Add(member);
                 await context.SaveChangesAsync();
 
-                return Ok("Đăng ký thành công.");
+                return NoContent();
             }
             catch (Exception ex)
             {
@@ -61,8 +59,11 @@ namespace eStoreAPI.Controllers
             {
                 return Unauthorized("Email hoặc mật khẩu không đúng.");
             }
-
-            return Ok("Đăng nhập thành công.");
+            else
+            {
+                return Ok(member);
+            }
+            
             // Xử lý đăng nhập thành công và tạo token JWT tương tự như trước.
         }
 
