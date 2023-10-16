@@ -72,6 +72,71 @@ namespace eStoreWebMVC.Controllers
             return View(await GetApi<List<Member>>(_apiMemberUrl, true));
         }
 
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login([Bind("Email, Password")] Member memberLogin)
+        {
+            try
+            {
+                //var httpClient = _httpClientFactory.CreateClient();
+                var apiUrl = _apiMemberUrl;
+                apiUrl += $"?$filter=Email eq '{memberLogin.Email}' and Password eq '{memberLogin.Password}'";
+
+                //var content = new StringContent(JsonSerializer.Serialize(memberLogin), System.Text.Encoding.UTF8, "application/json");
+                //var response = await httpClient.PostAsync(apiUrl, content);
+
+                //if (response.IsSuccessStatusCode)
+                //{
+                //    var member = await GetApi<Member>($"?$filter=Email eq ('{memberLogin.Email}') and Password eq ('{memberLogin.Password}')", false);
+
+                //    return RedirectToAction("Index", "Home");
+                //}
+                //else
+                //{
+                //    ModelState.AddModelError(string.Empty, "Login Error");
+                //    return View(memberLogin);
+                //}
+                var listMember = await GetApi<List<Member>>(apiUrl, true);
+                var member = listMember.FirstOrDefault();
+
+                if (member != null)
+                {
+                    // Save information to session
+                    HttpContext.Session.SetString("userId", member.MemberId.ToString());
+                    HttpContext.Session.SetString("userEmail", member.Email);
+
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Login Error");
+                    return View(memberLogin);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Login Error");
+                ModelState.AddModelError(string.Empty, "Server Error: " + ex.Message);
+                return View(memberLogin);
+            }
+        }
+
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Remove("userId");
+            HttpContext.Session.Remove("userEmail");
+
+            // Thực hiện các hành động cần thiết sau khi đăng xuất
+
+            return RedirectToAction("login", "Members");
+        }
+
+
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
